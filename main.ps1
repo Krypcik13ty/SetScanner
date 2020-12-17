@@ -25,9 +25,9 @@ $vars = get-childitem Env:
 $vars | foreach-object -process {$_ | Add-member -NotePropertyName Number -NotePropertyValue $varscounter; $varscounter++} 
 
 #Set amount of text fields, set the starting point and how far each one will move
-$breaks = $main_form.Height / 20
+$breaks = $main_form.Height / 25
 $drawpoint = 20
-$movesize = 20
+$movesize = 25
 
 #Copy to clipboard button Function
 function OnClick($Sender, $EventArgs){ 
@@ -48,7 +48,7 @@ for ($i = 1; $i -ne ($breaks - 3); $i = $i + 1)
     $(get-variable -Name "field$i").Value = new-object System.Windows.Forms.TextBox
     $(get-variable -Name "field$i").Value.Height = 30
     $(get-variable -Name "field$i").Value.Width = 700
-    $(get-variable -Name "field$i").Value.Location = New-Object System.Drawing.Point(370, $drawpoint)
+    $(get-variable -Name "field$i").Value.Location = New-Object System.Drawing.Point(250, $drawpoint)
     $(get-variable -Name "field$i").Value.ReadOnly = $true
     $(get-variable -Name "field$i").Value.Text = "$valueWriteout"
     $(get-variable -Name "label$i").Value = new-object System.Windows.Forms.Label
@@ -59,13 +59,13 @@ for ($i = 1; $i -ne ($breaks - 3); $i = $i + 1)
     $(get-variable -Name "question$i").Value = new-object System.Windows.Forms.Button
     $(get-variable -Name "question$i").Value.Height = 20
     $(get-variable -Name "question$i").Value.Width = 20
-    $(get-variable -Name "question$i").Value.Location = New-Object System.Drawing.Point(1080, $drawpoint)
+    $(get-variable -Name "question$i").Value.Location = New-Object System.Drawing.Point(960, $drawpoint)
     $(get-variable -Name "question$i").Value.Text = "?"
     $(get-variable -Name "copier$i").Value = new-object System.Windows.Forms.Button
     $(get-variable -Name "copier$i").Value.Height = 20
-    $(get-variable -Name "copier$i").Value.Width = 100
-    $(get-variable -Name "copier$i").Value.Location = New-Object System.Drawing.Point(1102, $drawpoint)
-    $(get-variable -Name "copier$i").Value.Text = "copy to clipboard $i"
+    $(get-variable -Name "copier$i").Value.Width = 120
+    $(get-variable -Name "copier$i").Value.Location = New-Object System.Drawing.Point(980, $drawpoint)
+    $(get-variable -Name "copier$i").Value.Text = "copy to clipboard"
     $(get-variable -Name "copier$i").Value | Add-Member -NotePropertyName Number -NotePropertyValue $i
     $(get-variable -Name "copier$i").Value.add_click({OnClick $this $_})
 
