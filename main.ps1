@@ -1,7 +1,10 @@
+#Disable erroraction to prevent unnecessary breakouts
 $ErrorActionPreference = "SilentlyContinue"
 
+#Add necessary types
 Add-Type -assembly System.Windows.Forms
 
+#Set Debug window to hidden (Comment from line 7 to 15 to enable debug window)
 Add-Type -Name Window -Namespace Console -MemberDefinition '
 [DllImport("Kernel32.dll")]
 public static extern IntPtr GetConsoleWindow();
@@ -11,24 +14,28 @@ public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
 $consolePtr = [Console.Window]::GetConsoleWindow()
 [Console.Window]::ShowWindow($consolePtr, 0)
 
+#Create main form
 $main_form = New-object System.Windows.Forms.Form
 $main_form.Text = "SetScanner"
 $main_form.Width = 1480
-$main_form.Height = 1480
+$main_form.Height = 1000
 $main_form.AutoScale = $true
 $varscounter = 1
 $vars = get-childitem Env:
 $vars | foreach-object -process {$_ | Add-member -NotePropertyName Number -NotePropertyValue $varscounter; $varscounter++} 
 
-
+#Set amount of text fields, set the starting point and how far each one will move
 $breaks = $main_form.Height / 20
 $drawpoint = 20
 $movesize = 20
+
+#Copy to clipboard button Function
 function OnClick($Sender, $EventArgs){ 
      $line = $Sender | Select-Object  -expandproperty Number
      $lineToCopy = $vars | where-object Number -eq $line | Select-object -ExpandProperty Value
      set-Clipboard -Value $lineToCopy
 }
+#main loop creating and filling fields.
 for ($i = 1; $i -ne ($breaks - 3); $i = $i + 1)
 {
     $nameWriteout = $vars | where-object Number -eq $i | Select-Object -ExpandProperty Name
@@ -70,21 +77,18 @@ for ($i = 1; $i -ne ($breaks - 3); $i = $i + 1)
     $drawpoint = $drawpoint + $movesize
 }
 
-get-varia
-
+#Buttons to show the additional options
 $functionsbutton = new-object System.Windows.Forms.Button
 $functionsbutton.Text = "Functions Panel"
 $functionsbutton.Width = 100
 $functionsbutton.height = 50
 $functionsbutton.Location =  new-Object System.Drawing.Point(1200, 100)
 
-
 $personalbutton = new-object System.Windows.Forms.Button
 $personalbutton.Text = "Personal Variables"
 $personalbutton.Width = 100
 $personalbutton.height = 50
 $personalbutton.Location =  new-Object System.Drawing.Point(1200, 150)
-
 
 $functionsbutton.Add_Click(
     {.\launcher.ps1}
@@ -97,4 +101,5 @@ $personalbutton.Add_Click(
 $main_form.Controls.Add($functionsbutton)
 $main_form.Controls.Add($personalbutton)
 
+# Show the main form
 $main_form.ShowDialog()
