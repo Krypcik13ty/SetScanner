@@ -14,43 +14,76 @@ $consolePtr = [Console.Window]::GetConsoleWindow()
 $main_form = New-object System.Windows.Forms.Form
 $main_form.Text = "SetScanner"
 $main_form.Width = 1480
-$main_form.Height = 480
+$main_form.Height = 1480
 $main_form.AutoScale = $true
+$varscounter = 1
+$vars = get-childitem Env:
+$vars | foreach-object -process {$_ | Add-member -NotePropertyName Number -NotePropertyValue $varscounter; $varscounter++} 
+
 
 $breaks = $main_form.Height / 20
 $drawpoint = 20
 $movesize = 20
+function OnClick($Sender, $EventArgs){ 
+     $line = $Sender | Select-Object  -expandproperty Number
+     $lineToCopy = $vars | where-object Number -eq $line | Select-object -ExpandProperty Value
+     set-Clipboard -Value $lineToCopy
+}
 for ($i = 1; $i -ne ($breaks - 3); $i = $i + 1)
 {
+    $nameWriteout = $vars | where-object Number -eq $i | Select-Object -ExpandProperty Name
+    $valueWriteout = $vars | where-object Number -eq $i | Select-object -ExpandProperty Value
     new-variable -name "field$i"
     new-variable -name "label$i"
+    new-variable -name "question$i"
+    new-variable -name "copier$i"
+    new-variable -name "value$i"
     $(get-variable -Name "field$i").Value = new-object System.Windows.Forms.TextBox
     $(get-variable -Name "field$i").Value.Height = 30
     $(get-variable -Name "field$i").Value.Width = 700
-    $(get-variable -Name "field$i").Value.Location = New-Object System.Drawing.Point(60, $drawpoint)
+    $(get-variable -Name "field$i").Value.Location = New-Object System.Drawing.Point(370, $drawpoint)
+    $(get-variable -Name "field$i").Value.ReadOnly = $true
+    $(get-variable -Name "field$i").Value.Text = "$valueWriteout"
     $(get-variable -Name "label$i").Value = new-object System.Windows.Forms.Label
     $(get-variable -Name "label$i").Value.Height = 20
-    $(get-variable -Name "label$i").Value.Width = 70
+    $(get-variable -Name "label$i").Value.Width = 350
     $(get-variable -Name "label$i").Value.Location = New-Object System.Drawing.Point(10, $drawpoint)
-    $(get-variable -Name "label$i").Value.Text = "field$i"
+    $(get-variable -Name "label$i").Value.Text = "$nameWriteout"
+    $(get-variable -Name "question$i").Value = new-object System.Windows.Forms.Button
+    $(get-variable -Name "question$i").Value.Height = 20
+    $(get-variable -Name "question$i").Value.Width = 20
+    $(get-variable -Name "question$i").Value.Location = New-Object System.Drawing.Point(1080, $drawpoint)
+    $(get-variable -Name "question$i").Value.Text = "?"
+    $(get-variable -Name "copier$i").Value = new-object System.Windows.Forms.Button
+    $(get-variable -Name "copier$i").Value.Height = 20
+    $(get-variable -Name "copier$i").Value.Width = 100
+    $(get-variable -Name "copier$i").Value.Location = New-Object System.Drawing.Point(1102, $drawpoint)
+    $(get-variable -Name "copier$i").Value.Text = "copy to clipboard $i"
+    $(get-variable -Name "copier$i").Value | Add-Member -NotePropertyName Number -NotePropertyValue $i
+    $(get-variable -Name "copier$i").Value.add_click({OnClick $this $_})
 
+    
     $main_form.Controls.Add($(get-variable -Name "field$i").Value)
     $main_form.Controls.Add($(get-variable -Name "label$i").Value)
+    $main_form.Controls.Add($(get-variable -Name "question$i").Value)
+    $main_form.Controls.Add($(get-variable -Name "copier$i").Value)
     $drawpoint = $drawpoint + $movesize
 }
+
+get-varia
 
 $functionsbutton = new-object System.Windows.Forms.Button
 $functionsbutton.Text = "Functions Panel"
 $functionsbutton.Width = 100
 $functionsbutton.height = 50
-$functionsbutton.Location =  new-Object System.Drawing.Point(300, 100)
+$functionsbutton.Location =  new-Object System.Drawing.Point(1200, 100)
 
 
 $personalbutton = new-object System.Windows.Forms.Button
 $personalbutton.Text = "Personal Variables"
 $personalbutton.Width = 100
 $personalbutton.height = 50
-$personalbutton.Location =  new-Object System.Drawing.Point(300, 150)
+$personalbutton.Location =  new-Object System.Drawing.Point(1200, 150)
 
 
 $functionsbutton.Add_Click(
