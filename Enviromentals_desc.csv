@@ -1,0 +1,48 @@
+func,desc
+ALLUSERSPROFILE,Lokacja katalogu wszystkich u¿ytkowików. (To samo co % PROFILESFOLDER% \ All users lub % PROFILESFOLDER% \ Public.)
+APPDATA,Katalog systemu plików zawieraj¹cy dane aplikacji dla wszystkich u¿ytkowników.
+ChocolateyInstall,Lokalizacja zainstalowanego pakietu Chocolatey.
+ChocolateyLastPathUpdate,
+ChocolateyToolsLocation,Lokalizacja pakietu narzêdzi Chocolatey. 
+CommonProgramFiles,Lokalizacja folderu z komponentami dzielonymi miêdzy aplikacjami dla wersji 32bit.
+CommonProgramFiles(x86),Lokalizacja folderu z komponentami dzielonymi miêdzy aplikacjami dla wersji 64bit.
+CommonProgramW6432,Lokalizacja folderu z komponentami dzielonymi miêdzy aplikacjami dla wersji 64bit. 
+COMPUTERNAME,Nazwa w³asna komputera.
+ComSpec,Lokalizacja wiersza polecenia.
+DriverData,Lokalizacja podfolderu "DriverData" w folderze ze sterownikami systemu. 
+FPS_BROWSER_APP_PROFILE_STRING,Nieudokumentowana zmienna dla przegl¹darki Microsoft Edge dla systemu Windows 10.
+FPS_BROWSER_USER_PROFILE_STRING,Nieudokumentowana zmienna dla przegl¹darki Microsoft Edge dla systemu Windows 10.
+GIT_INSTALL_ROOT,Lokalizacja aktualnej instalacji GITa .
+HOMEDRIVE,G³ówny napêd systemu (z plikami systemowymi Windows'a).
+HOMEPATH,Lokalizacja katalogu domowego u¿ytkownika. 
+LANG,Jêzyk. 
+LOCALAPPDATA,lokalizacja podfolderu 'Local' w katalogu 'AppData
+LOGONSERVER,kontroler domeny, który zweyfikowa³ bie¿¹c¹ sesje logowania.
+NUMBER_OF_PROCESSORS,Liczba rdzeni procesora
+OneDrive,Lokalizacja instalacji programu Microsoft OneDrive.
+OneDriveConsumer,Lokalizacja instalacji programu Microsoft OneDrive.
+OS,aktualny system operacyjny
+Path,Lista folderów potrzebnych do wyszukania plików do uruchomienia. 
+PATHEXT,Lista rozszerzeñ plików do wykonania przez OS.
+PROCESSOR_ARCHITECTURE,Architektura chipa procesora (AMD lub INTEL).
+PROCESSOR_IDENTIFIER,Opis procesora.
+PROCESSOR_LEVEL,Numer modelu procesora komputera.
+PROCESSOR_REVISION,Numer wersji procesora. 
+ProgramData,Folder systemowy do zarzadzania danymi aplikacji niepowi¹zanych z aktywnym lub zarejestrowanym uzytkownikiem.
+ProgramFiles,Lokalizacja folderu z plikami programów dla wersji 32bit.
+ProgramFiles(x86),Lokalizacja folderu z plikami programów dla wersji 64bit.
+ProgramW6432,Lokalizacja folderu z plikami programów dla wersji 64bit. 
+PSModulePath,Œcie¿ki do lokalizacji modu³ów zainstalowanych na dysku. 
+PUBLIC,Podfolder Public folderu Users (C:\Users\Public).
+RUBYOPT,Kodowanie ³ancucha znaków. (-Eutf-8)
+SESSIONNAME,Nazwa zdalnej sesji.
+SystemDrive,Symbol g³ównego dysku systemowego.
+SystemRoot,G³ówny katalog Windows.
+TEMP,Lokalizacja plików tymczasowych systemu.
+TMP,Lokalizacja plików tymczasowych systemu.
+USERDOMAIN,Domena zawierajaca konto uzytkownika.
+USERDOMAIN_ROAMINGPROFILE,Domena zawierajaca konto uzytkownika.
+USERNAME,Nazwa obecnego u¿ytkownika.
+USERPROFILE,G³ówny katalog zalogowanego uzytkownika (C:\Users\_____).
+VBOX_MSI_INSTALL_PATH,Lokalizacja instalacji Oracle VirtualBox.
+windir,G³ówny katalog Windows.
