@@ -29,11 +29,44 @@ $breaks = $main_form.Height / 25
 $drawpoint = 20
 $movesize = 25
 
+$P = Import-Csv -Path .\Environmentals_desc.csv 
+
 #Copy to clipboard button Function
-function OnClick($Sender, $EventArgs){ 
-     $line = $Sender | Select-Object  -expandproperty Number
-     $lineToCopy = $vars | where-object Number -eq $line | Select-object -ExpandProperty Value
-     set-Clipboard -Value $lineToCopy
+function OnClick($Sender, $EventArgs){     
+    $line = $Sender | Select-Object  -expandproperty Number
+    if($Sender.varname -like $null)
+    {
+    $lineToCopy = $vars | where-object Number -eq $line | Select-object -ExpandProperty Value
+    Set-Clipboard -Value $lineToCopy
+    }
+    if($Sender.varname -notlike $null)
+    {
+        $lineToCopy = $Sender.varname
+        $textToCopy = $P | where-Object func -like $lineToCopy | select-Object -ExpandProperty desc
+        $helpfunc = New-object System.Windows.Forms.Form
+        $helpfunc.Text = "What is this?"
+        $helpfunc.Width = 500
+        $helpfunc.Height = 200
+        $helpfunc.AutoScale = $true  
+        $helpname = new-object System.Windows.Forms.RichTextBox
+        $helpname.height = 30
+        $helpname.Width = 400
+        $helpname.Location = New-Object System.Drawing.Point(10, 10)
+        $oldFont = $helpname.Font
+        $font = New-Object Drawing.Font($oldFont.FontFamily, $oldFont.Size, [Drawing.FontStyle]::Bold)
+        $helpname.Font = $font
+        $helpname.ReadOnly = $true
+        $helpname.Text = "$lineToCopy"
+        $helpdesc = new-object System.Windows.Forms.Label
+        $helpdesc.height = 400
+        $helpdesc.Width = 400
+        $helpdesc.Location = New-Object System.Drawing.Point(10, 40)
+        $helpdesc.Text = "$textToCopy"
+        $helpfunc.Controls.Add($helpname)
+        $helpfunc.Controls.Add($helpdesc)
+        $helpfunc.ShowDialog()
+    }
+   
 }
 #main loop creating and filling fields.
 for ($i = 1; $i -ne ($breaks - 3); $i = $i + 1)
@@ -61,6 +94,8 @@ for ($i = 1; $i -ne ($breaks - 3); $i = $i + 1)
     $(get-variable -Name "question$i").Value.Width = 20
     $(get-variable -Name "question$i").Value.Location = New-Object System.Drawing.Point(960, $drawpoint)
     $(get-variable -Name "question$i").Value.Text = "?"
+    $(get-variable -Name "question$i").Value | Add-Member -NotePropertyName varname -NotePropertyValue $nameWriteout
+    $(get-variable -Name "question$i").Value.add_click({OnClick $this $_})
     $(get-variable -Name "copier$i").Value = new-object System.Windows.Forms.Button
     $(get-variable -Name "copier$i").Value.Height = 20
     $(get-variable -Name "copier$i").Value.Width = 120
