@@ -22,13 +22,14 @@ $main_form.Text = "SetScanner"
 $main_form.Width = 1300
 $main_form.Height = 1000
 $main_form.AutoScale = $true
+$main_form.MaximizeBox = $false
 $main_form.FormBorderStyle = 'FixedDialog'
 $varscounter = 1
 $vars = get-childitem Env:
 $vars | foreach-object -process {$_ | Add-member -NotePropertyName Number -NotePropertyValue $varscounter; $varscounter++} 
 
 #Set amount of text fields, set the starting point and how far each one will move
-$breaks = $main_form.Height / 25
+$breaks = [math]::Round(($main_form.Height / 25))
 $drawpoint = 20
 $movesize = 25
 
