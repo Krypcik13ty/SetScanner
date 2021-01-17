@@ -16,10 +16,10 @@ $consolePtr = [Console.Window]::GetConsoleWindow()
 
 #Create main form
 $main_form = New-object System.Windows.Forms.Form
-$icon = '.\icon.ico'
+$icon = "$PSScriptRoot\icon.ico"
 $main_form.Icon = $icon
 $main_form.Text = "SetScanner"
-$main_form.Width = 1300
+$main_form.Width = 1260
 $main_form.Height = 1000
 $main_form.AutoScale = $true
 $main_form.MaximizeBox = $false
@@ -30,11 +30,11 @@ $vars | foreach-object -process {$_ | Add-member -NotePropertyName Number -NoteP
 
 #Set amount of text fields, set the starting point and how far each one will move
 $breaks = [math]::Round(($main_form.Height / 25))
-$drawpoint = 20
+$drawpoint = 40
 $movesize = 25
 
 $P = Import-Csv -Path .\Environmentals_desc.csv 
-$image = [System.Drawing.Image]::Fromfile('.\softlogo.png')
+$image = [System.Drawing.Image]::Fromfile("$PSScriptRoot\softlogo.png")
 $pic = New-Object System.Windows.Forms.PictureBox
 $pic.Width = 128
 $pic.Height = 128
@@ -55,6 +55,10 @@ function OnClick($Sender, $EventArgs){
         $textToCopy = $P | where-Object func -like $lineToCopy | select-Object -ExpandProperty desc
         $helpfunc = New-object System.Windows.Forms.Form
         $helpfunc.Text = "What is this?"
+        $helpfunc.MaximizeBox = $false
+        $helpfunc.MinimizeBox = $false
+        $helpfunc.StartPosition = 'CenterScreen'
+        $helpfunc.FormBorderStyle = 'FixedDialog'
         $helpfunc.Width = 500
         $helpfunc.Height = 200
         $helpfunc.AutoScale = $true  
@@ -176,7 +180,7 @@ $portScanner.Width = 128
 $portScanner.height = 50
 $portScanner.Location =  new-Object System.Drawing.Point(1110, 192)
 $portScanner.Add_Click(
-    {.\launcher.ps1}
+    {.\Portscanner.ps1}
 )
 
 $personalbutton = new-object System.Windows.Forms.Button
@@ -187,16 +191,75 @@ $personalbutton.Location =  new-Object System.Drawing.Point(1110, 242)
 $personalbutton.Add_Click(
     {.\personal.ps1}
 )
-$extrasButton = new-object System.Windows.Forms.Button
-$extrasButton.Text = "Extras"
-$extrasButton.Width = 128
-$extrasButton.height = 50
-$extrasButton.Location =  new-Object System.Drawing.Point(1110, 292)
-$extrasButton.Add_Click(
-    {.\personal.ps1}
+
+$searchbutton = new-object System.Windows.Forms.Button
+$searchbutton.Text = "Search Variables"
+$searchbutton.Width = 250
+$searchbutton.height = 20
+$searchbutton.Location =  new-Object System.Drawing.Point(850, 10)
+$SearchView_ItemSelectionChanged=[System.Windows.Forms.ListViewItemSelectionChangedEventHandler]{
+    if($($_.IsSelected) -like $true)
+    {   
+        $copybar.Text = $($_.Item.Text)
+        $copyvariablebar.Text = $vars | where-object Name -Like $copybar.Text | Select-Object -ExpandProperty Value
+        $infobar.Text = $P | where-Object func -like $copybar.Text | select-Object -ExpandProperty desc
+    }
+}
+$searchbutton.Add_Click(
+    {
+        $SearchForm = New-object System.Windows.Forms.Form
+        $SearchForm.Icon = $icon
+        $SearchForm.Text = "Search"
+        $SearchForm.Width = 965
+        $SearchForm.Height = 540
+        $SearchForm.AutoScale = $true
+        $SearchForm.MaximizeBox = $false
+        $SearchForm.FormBorderStyle = 'FixedDialog'
+        $Search = $vars | where-object Name -Match $searchbar.Text | Select-Object Name, Value
+        $SearchList = New-Object System.Windows.Forms.ListView
+        $Searchlist.FullRowSelect = $true
+        $SearchList.Location = New-Object System.Drawing.Point(10,10)
+        $SearchList.Size = New-Object System.Drawing.Size(622,480)
+        $SearchList.View = 'Details'
+        $SearchList.MultiSelect = $false
+        [Void]$SearchList.Columns.Add("Name", 300, [System.Windows.Forms.HorizontalAlignment] "Center")
+        [Void]$SearchList.Columns.Add("Value", 300, [System.Windows.Forms.HorizontalAlignment] "Center")
+        ForEach($array in $Search){
+            $item = New-Object System.Windows.Forms.ListviewItem($array.Name)
+            $item.SubItems.Add("$($array.Value)")
+            $SearchList.Items.Add($item)
+        }
+        $copybar = new-object System.Windows.Forms.textbox
+        $copybar.Width = 300
+        $copybar.height = 50
+        $copybar.ReadOnly = $true
+        $copybar.Location =  new-Object System.Drawing.Point(640, 10)
+        $copyvariablebar = new-object System.Windows.Forms.richtextbox
+        $copyvariablebar.Width = 300
+        $copyvariablebar.height = 200
+        $copyvariablebar.ReadOnly = $true
+        $copyvariablebar.Location =  new-Object System.Drawing.Point(640, 30)
+        $infobar = new-object System.Windows.Forms.richtextbox
+        $infobar.Width = 300
+        $infobar.height = 200
+        $infobar.ReadOnly = $true
+        $infobar.Location =  new-Object System.Drawing.Point(640, 230)
+        $SearchList.Add_ItemSelectionChanged($SearchView_ItemSelectionChanged)
+        $SearchForm.Controls.Add($infobar)
+        $SearchForm.Controls.Add($copybar)
+        $SearchForm.Controls.Add($copyvariablebar)
+        $SearchForm.Controls.Add($SearchList)
+        $SearchForm.ShowDialog()
+    }
 )
+$searchbar = new-object System.Windows.Forms.textbox
+$searchbar.Width = 595
+$searchbar.height = 50
+$searchbar.Location =  new-Object System.Drawing.Point(250, 11)
 
 
+$main_form.Controls.Add($searchbar)
+$main_form.Controls.Add($searchbutton)
 $main_form.Controls.Add($servicesScanner)
 $main_form.Controls.Add($portScanner)
 $main_form.Controls.Add($personalbutton)

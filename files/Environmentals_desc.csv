@@ -46,3 +46,11 @@ USERNAME,Name of the current user.
 USERPROFILE,Logged on user's root directory (C:\Users\_____).
 VBOX_MSI_INSTALL_PATH,Oracle VirtualBox installation location.
 windir,Windows root directory.
+Public IP, Your personal identifier. Virtual version of your street address.
+Hostname, How are you named by your ISP.
+City, The city of your ISP.
+Region, Region of a country that your ISP is located in.
+Country, The country in which your ISP resides
+Internet Service Provider, Also known as ISP. Name of the company.
+ISP GPS Location, Coordinates of the main building of your ISP
+Activated CD-Key, The key that was used to unlock and register your version of Windows.
