@@ -10,7 +10,7 @@ $pers_form.FormBorderStyle = 'FixedDialog'
 $warningBox = New-Object System.Windows.Forms.RichTextBox
 $WarningBox.Location = New-Object System.Drawing.Point(10,9)
 $warningBox.Enabled = $False
-$warningBox.Height = 128
+$warningBox.Height = 135
 $warningBox.Width = 390
 $warningBox.Font = 'Segoe UI, 12pt, style=Bold, Italic'
 $warningBox.Text = "These variables are personal, specifically: 
