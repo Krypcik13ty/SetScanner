@@ -3,6 +3,7 @@ $form.Text = 'Data Entry Form'
 $form.Size = New-Object System.Drawing.Size(800,900)
 $form.StartPosition = 'CenterScreen'
 $form.FormBorderStyle = 'FixedDialog'
+$form.MaximizeBox = $false
 $label = New-Object System.Windows.Forms.Label
 $label.Location = New-Object System.Drawing.Point(10,20)
 $label.Size = New-Object System.Drawing.Size(280,20)
@@ -71,8 +72,8 @@ $listview1_ItemSelectionChanged=[System.Windows.Forms.ListViewItemSelectionChang
 }
 $listBox.Add_ItemSelectionChanged($listview1_ItemSelectionChanged)
 
-$image1 = [System.Drawing.Image]::Fromfile('.\gear_on256.png')
-$image2 = [System.Drawing.Image]::Fromfile('.\gear_off256.png')
+$image1 = [System.Drawing.Image]::Fromfile("$PSScriptRoot\gear_on256.png")
+$image2 = [System.Drawing.Image]::Fromfile("$PSScriptRoot\gear_off256.png")
 $imageList = New-Object System.Windows.Forms.ImageList
 $ImageList.Images.Add($image1)
 $ImageList.Images.Add($image2)

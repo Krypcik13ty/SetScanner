@@ -1,12 +1,6 @@
- ::::::::::::::::::::::::::::::::::::::::::::
-:: Automatically check & get admin rights V2
-::::::::::::::::::::::::::::::::::::::::::::
 @echo off
 CLS
 ECHO.
-ECHO =============================
-ECHO Running Admin shell
-ECHO =============================
 
 :init
 setlocal DisableDelayedExpansion
@@ -22,9 +16,6 @@ if '%errorlevel%' == '0' ( goto gotPrivileges ) else ( goto getPrivileges )
 :getPrivileges
 if '%1'=='ELEV' (echo ELEV & shift /1 & goto gotPrivileges)
 ECHO.
-ECHO **************************************
-ECHO Invoking UAC for Privilege Escalation
-ECHO **************************************
 
 ECHO Set UAC = CreateObject^("Shell.Application"^) > "%vbsGetPrivileges%"
 ECHO args = "ELEV " >> "%vbsGetPrivileges%"
@@ -40,11 +31,6 @@ setlocal & pushd .
 cd /d %~dp0
 if '%1'=='ELEV' (del "%vbsGetPrivileges%" 1>nul 2>nul  &  shift /1)
 
-::::::::::::::::::::::::::::
-::START
-::::::::::::::::::::::::::::
- 
- rem  set __COMPAT_LAYER=RunAsInvoker  
- REGEDIT.EXE  /S  "%~dp0\EnableScripts.reg"
-timeout /NOBREAK 3
-Powershell.exe -Command "& {Start-Process Powershell.exe -ArgumentList '-ExecutionPolicy Bypass -File %~dp0\installer.ps1' -Verb RunAs}"
+REGEDIT.EXE  /S  "%~dp0\EnableScripts.reg"
+
+Powershell.exe -Command "& {Start-Process Powershell.exe -ArgumentList '-ExecutionPolicy Bypass -File %~dp0\inst.ps1' -Verb RunAs}"
