@@ -1,0 +1,56 @@
+func,desc
+ALLUSERSPROFILE,Location of the user properties directory.(Same as % PROFILESFOLDER% \ All users or % PROFILESFOLDER% \ Public.)
+APPDATA,The file system directory that contains application data for all users.
+ChocolateyInstall,Location of Chocolatey package installation.
+ChocolateyLastPathUpdate,Date of the last Chocolatey update.
+ChocolateyToolsLocation,Location of the Chocolatey Toolkit. 
+CommonProgramFiles,Location of the folder with components shared between applications for the 32bit version.
+CommonProgramFiles(x86),Location of the folder with components shared between applications for the 64bit version.
+CommonProgramW6432,Location of the folder with components shared between applications for the 64bit version. 
+COMPUTERNAME,The proper name of the computer.
+ComSpec,Command line location.
+DriverData,"Location of the ""DriverData"" subfolder in the folder with system drivers. "
+FPS_BROWSER_APP_PROFILE_STRING,Undocumented variable for Microsoft Edge on Windows 10.
+FPS_BROWSER_USER_PROFILE_STRING,Undocumented variable for Microsoft Edge on Windows 10.
+GIT_INSTALL_ROOT,Location of the current GIT installation.
+HOMEDRIVE,The main drive of the system (with Windows system files).
+HOMEPATH,The location of the user's home directory.
+LANG,Language. 
+LOCALAPPDATA,Location of the 'Local' subfolder in the 'AppData' directory.
+LOGONSERVER,The domain controller that has validated the current logon session.
+NUMBER_OF_PROCESSORS,The number of processor cores.
+OneDrive,Microsoft OneDrive installation location.
+OneDriveConsumer,Microsoft OneDrive installation location.
+OS,Current operating system.
+Path,List of folders needed to search for files to run. 
+PATHEXT,List of file extensions to be executed by the OS.
+PROCESSOR_ARCHITECTURE,CPU chip architecture (AMD or INTEL).
+PROCESSOR_IDENTIFIER,CPU description.
+PROCESSOR_LEVEL,Computer processor model number.
+PROCESSOR_REVISION,Processor version number. 
+ProgramData,System folder for data management of applications unrelated to an active or registered user.
+ProgramFiles,Location of the folder with program files for the 32bit version.
+ProgramFiles(x86),Location of the folder with program files for the 64bit version.
+ProgramW6432,Location of the folder with program files for the 64bit version. 
+PSModulePath,Paths to the location of the modules installed on the disk. 
+PUBLIC,The Public subfolder of the Users folder (C:\Users\Public).
+RUBYOPT,String encoding. (-Eutf-8)
+SESSIONNAME,The name of the remote session.
+SystemDrive,Symbol for the main system drive.
+SystemRoot,Windows root directory.
+TEMP,Location of system temporary files.
+TMP,Location of system temporary files.
+USERDOMAIN,The domain that contains the user's account.
+USERDOMAIN_ROAMINGPROFILE,The domain that contains the user's roaming account.
+USERNAME,Name of the current user.
+USERPROFILE,Logged on user's root directory (C:\Users\_____).
+VBOX_MSI_INSTALL_PATH,Oracle VirtualBox installation location.
+windir,Windows root directory.
+Public IP, Your personal identifier. Virtual version of your street address.
+Hostname, How are you named by your ISP.
+City, The city of your ISP.
+Region, Region of a country that your ISP is located in.
+Country, The country in which your ISP resides
+Internet Service Provider, Also known as ISP. Name of the company.
+ISP GPS Location, Coordinates of the main building of your ISP
+Activated CD-Key, The key that was used to unlock and register your version of Windows.
