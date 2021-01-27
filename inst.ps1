@@ -14,5 +14,6 @@ Set-Location -LiteralPath $PSScriptRoot
 New-Item -Path "$env:HOMEDRIVE$env:HOMEPATH\SetScanner" -ItemType Directory
 copy-item .\files\* $env:HOMEDRIVE$env:HOMEPATH\SetScanner -Force -Recurse
 
+unblock-File $env:HOMEDRIVE$env:HOMEPATH\SetScanner\*
 
-set-shortcut "$env:HOMEPATH\Desktop\SetScanner.lnk" "powershell.exe" "-File $env:HOMEDRIVE$env:HOMEPATH\SetScanner\main.ps1" "$env:HOMEDRIVE$env:HOMEPATH\SetScanner" "$env:HOMEDRIVE$env:HOMEPATH\SetScanner\icon.ico"
+set-shortcut "$env:HOMEPATH\Desktop\SetScanner.lnk" "powershell.exe" "-File $env:HOMEDRIVE$env:HOMEPATH\SetScanner\launcher.ps1" "$env:HOMEDRIVE$env:HOMEPATH\SetScanner" "$env:HOMEDRIVE$env:HOMEPATH\SetScanner\icon.ico"
