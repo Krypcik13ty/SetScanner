@@ -38,7 +38,21 @@ $listBox.SmallImageList = $imageList
 [Void]$listBox.Columns.Add("External?", 100, [System.Windows.Forms.HorizontalAlignment] "Center")
 [Void]$listBox.Columns.Add("Used by", 160, [System.Windows.Forms.HorizontalAlignment] "Center")
 
-$import = Get-NetTCPConnection
+if($machinebar.Text -like $null){
+    $import = Get-NetTCPConnection
+}
+else 
+{
+    if ($credential -like $null)
+    {
+        $import = invoke-command -Computername $machinebar.Text ScriptBlock {Get-NetTCPConnection}
+    }
+    if ($credential -notlike $null)
+    {
+        $import = invoke-command -Computername $machinebar.Text -Credential $credential -ScriptBlock {Get-NetTCPConnection}
+    }
+}
+
 ForEach($array in $import){
     if ($array.AppliedSetting -like "Internet") {
         $external = "Yes"

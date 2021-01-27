@@ -6,11 +6,12 @@ $pers_form.Width = 600
 $pers_form.Height = 400
 $pers_form.AutoScale = $true
 $pers_form.MaximizeBox = $false
+$pers_form.StartPosition = 'CenterScreen'
 $pers_form.FormBorderStyle = 'FixedDialog'
 $warningBox = New-Object System.Windows.Forms.RichTextBox
 $WarningBox.Location = New-Object System.Drawing.Point(10,9)
 $warningBox.Enabled = $False
-$warningBox.Height = 135
+$warningBox.Height = 128
 $warningBox.Width = 390
 $warningBox.Font = 'Segoe UI, 12pt, style=Bold, Italic'
 $warningBox.Text = "These variables are personal, specifically: 
@@ -120,7 +121,20 @@ $perslabel1.Text = "Public IP"
     $perslabel7.Text = "ISP GPS Location"
     $persfield7.Text = $ipinfo.loc
     $perslabel8.Text = "Activated CD-Key"
-    $cdkey = Get-Ciminstance -Class SoftwareLicensingService | select-Object -ExpandProperty OA3xOriginalProductKey
+    if($machinebar.Text -like $null){
+      $cdkey = Get-Ciminstance -Class SoftwareLicensingService | select-Object -ExpandProperty OA3xOriginalProductKey
+  }
+  else 
+  {
+      if ($credential -like $null)
+      {
+          $cdkey = invoke-command -Computername $machinebar.Text ScriptBlock {Get-Ciminstance -Class SoftwareLicensingService | select-Object -ExpandProperty OA3xOriginalProductKey}
+      }
+      if ($credential -notlike $null)
+      {
+          $cdkey = invoke-command -Computername $machinebar.Text -Credential $credential -ScriptBlock {Get-Ciminstance -Class SoftwareLicensingService | select-Object -ExpandProperty OA3xOriginalProductKey}
+      }
+  }
     $persfield8.Text = $cdkey
 $revealbutton = new-object System.Windows.Forms.Button
 $revealbutton.Height = 128
@@ -144,3 +158,35 @@ $revealbutton.Add_Click{
 }
 $pers_form.Controls.Add($revealbutton)
 $pers_form.ShowDialog()
+# SIG # Begin signature block
+# MIIFmAYJKoZIhvcNAQcCoIIFiTCCBYUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
+# gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUrhRIi8KBlV3dg2tE9fkDZ9I8
+# jGWgggO6MIIDtjCCAx+gAwIBAgIQPwt5EwLdMplN7jLNRRIvfzANBgkqhkiG9w0B
+# AQUFADAUMRIwEAYDVQQDDAlybmF3cm9ja2kwHhcNMjEwMTE5MTUyODI1WhcNMjIw
+# MTE5MTU0ODI1WjAUMRIwEAYDVQQDDAlybmF3cm9ja2kwgZ8wDQYJKoZIhvcNAQEB
+# BQADgY0AMIGJAoGBAMqQln8B+VY+apIk3J7zFn5koS32a8ryYOHznmton2axEP7Y
+# 3l6SGomBhSifntKhvNER20ImhDLxbk68aFUeh4zrVENdcwp0EnQy0oZ/eOmMzAbA
+# j3TRDkQvq8bmwcx+6plcKgi0dMagIci4hNS5RlxFZNAVo7ocxqeFLhx71DqVAgMB
+# AAGjggIHMIICAzA8BgkrBgEEAYI3FQcELzAtBiUrBgEEAYI3FQiDgOoJgpPfU4O5
+# jyGBwb09h+vMTgCGl5dQxqRpAgFkAgELMBMGA1UdJQQMMAoGCCsGAQUFBwMDMA4G
+# A1UdDwEB/wQEAwIHgDAbBgkrBgEEAYI3FQoEDjAMMAoGCCsGAQUFBwMDMCQGA1Ud
+# EQQdMBugGQYKKwYBBAGCNxQCA6ALDAlybmF3cm9ja2kwHQYDVR0OBBYEFMl47Rhi
+# INK2ylGaKTKuZM1+FaMiMGYGCisGAQQBgjcKCxoEWP8dAwAUAAAAVwBBAEMAQQBJ
+# AFMAUwBVAEkATgBHADEALgBxAGcALgBjAG8AbQAAABAAAABRAEcAIABXAEEAIABJ
+# AHMAcwB1AGkAbgBnACAAMQAAAAAAAAAwgdMGCisGAQQBgjcKC1cEgcQAAAAAAAAA
+# AAIAAAAAAAAAAgAAAGwAZABhAHAAOgAAAHsARgBDAEYARgAwADAARQBFAC0ANQBE
+# ADYANQAtADQAQQAyAEEALQA5AEYARQA0AC0ARgAzADYAOABBADEANwA4ADEAOQA4
+# AEEAfQAAAFcAQQBDAEEASQBTAFMAVQBJAE4ARwAxAC4AcQBnAC4AYwBvAG0AXABR
+# AEcAIABXAEEAIABJAHMAcwB1AGkAbgBnACAAMQAAADIAMAA0ADIAOAA3AAAAMA0G
+# CSqGSIb3DQEBBQUAA4GBAIUDPfW0NLcYbTMBs6m07yTjPFpEOgaEcc3nI8n2dxD5
+# 2fc2XHoB8milKPGiIKJt5p//r/ruSDUtzvcjrVL9SWTHY8sfUBQ1YYbytxhxmOfO
+# 16gsDjgl0dIAznmlzRSqT6bY/vQpXOS+ssqTV0PpjOy7JY1ropesET3QeE71nL20
+# MYIBSDCCAUQCAQEwKDAUMRIwEAYDVQQDDAlybmF3cm9ja2kCED8LeRMC3TKZTe4y
+# zUUSL38wCQYFKw4DAhoFAKB4MBgGCisGAQQBgjcCAQwxCjAIoAKAAKECgAAwGQYJ
+# KoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisGAQQB
+# gjcCARUwIwYJKoZIhvcNAQkEMRYEFLHomcaA53S+mUifkmrgpRNC+awJMA0GCSqG
+# SIb3DQEBAQUABIGAvbhMA/mhuDt8Yjp69tO7k6EcbhK9J4QBHg/8tVgK2Oj7CYcv
+# i2KNtb93lIIm7DWDrmzpWMGqO1WH13ulcv9hHDDM1MRA+RJKU4NviGXcmnsn/H2U
+# V5mEhiJ8Cpg9wvPSdpBcUVQSLsELlIDm36Oi4TYFzIQbh8iUcYpPH9CICOI=
+# SIG # End signature block
