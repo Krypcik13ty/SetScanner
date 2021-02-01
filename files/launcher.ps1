@@ -1,5 +1,5 @@
 #Disable erroraction to prevent unnecessary breakouts
-$ErrorActionPreference = "SilentlyContinue"
+# $ErrorActionPreference = "SilentlyContinue"
 
 #Add necessary types
 Add-Type -assembly System.Windows.Forms
@@ -89,37 +89,43 @@ $func1button.Add_Click(
     if($usernamebar.Text -notlike $null){
     $username = $usernamebar.Text
     [SecureString]$secureString = $passwordbar.Text | ConvertTo-SecureString -AsPlainText -Force 
-    [PSCredential]$credential = New-Object System.Management.Automation.PSCredential -ArgumentList $username, $secureString
+    [PSCredential]$global:credential = New-Object System.Management.Automation.PSCredential -ArgumentList $username, $secureString
+    write-host "Creds maybe created"
+    invoke-command -ErrorAction Continue -ErrorVariable err -ComputerName $machinebar.Text -Credential $global:credential -ScriptBlock {hostname} 
     }
+    else
+    {
+        invoke-command -ErrorAction Continue -ErrorVariable err -ComputerName $machinebar.Text -ScriptBlock {hostname} 
+    }
+    
     if ($machinebar.Text){
+        write-host  "resolving name" 
         if ((test-connection -Computername $machinebar.Text -Quiet) -like $true){
-            if ($credential) {
-            if ((invoke-command -ErrorAction SilentlyContinue -ComputerName $machinebar.Text -Credential $credential -ScriptBlock {hostname}) -like $machinebar.Text) {
-                .\main.ps1
-            }
-            else
+            write-host "Check credentials" 
+
+            if ($err.count -eq 0)
             {
-                $statusWindow.Text = "Incorrect Credentials"
+                   write-host "Testing Credentials"
+                        $func_form.Close()
+                        .\main.ps1
+                }
+            else {
+                $statusWindow.Text = "Incorrect Credentials!"
             }
         }
-        else 
+        
+        
+        else
         {
-            if ((invoke-command -ErrorAction SilentlyContinue -ComputerName $machinebar.Text -ScriptBlock {hostname}) -like $machinebar.Text) {
-                .\main.ps1
-            }
-            else
-            {
-                $statusWindow.Text = "Incorrect Credentials"
-            }
+            write-host "machine inserted does not ping"
+            $statusWindow.Text = "Could not resolve DNS name!"
         }
     }
+    
     else
     {
-        $statusWindow.Text = "Could not resolve the remote machine."
-    }
-    }
-    else
-    {
+        write-host " launch on local."
+        $func_form.Close()
         .\main.ps1
     }
 }

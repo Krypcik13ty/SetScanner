@@ -24,7 +24,20 @@ $pers_form.Controls.Add($warningBox)
 
 $ErrorActionPreference = "SilentlyContinue"
 
-$ipinfo = Invoke-RestMethod http://ipinfo.io/json
+if($machinebar.Text -like $null){
+    $ipinfo = Invoke-RestMethod http://ipinfo.io/json
+}
+else 
+{
+    if ($credential -like $null)
+    {
+        $ipinfo = invoke-command -Computername $machinebar.Text ScriptBlock {Invoke-RestMethod http://ipinfo.io/json}
+    }
+    if ($credential -notlike $null)
+    {
+        $ipinfo = invoke-command -Computername $machinebar.Text -Credential $credential -ScriptBlock {Invoke-RestMethod http://ipinfo.io/json}
+    }
+}
 
 $drawpoint2 = 160
 $movesize2 = 25

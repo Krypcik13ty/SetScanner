@@ -159,10 +159,12 @@ $resetButton.Add_Click(
                         invoke-command -Computername $machinebar.Text -Credential $credential -ScriptBlock {Restart-Service -Name $using:selectedservice}
                     }
                     $resetButton.Text = "Service Restarted!"
+                                       
+                    
                 }
                 catch 
                 {
-                    $resetButton.Text = "Unable to restart!"                  
+                    $resetButton.Text = "Unable to restart!"                 
                 }
                 finally
                 {
@@ -240,29 +242,31 @@ $powerButton.Add_Click(
                 catch [Microsoft.PowerShell.Commands.ServiceCommandException]
                 {               
                     $powerButton.Text = "elevating..."
-                    if(($global:import | where-object Name -like "$selectedservice" | select-object -ExpandProperty Status) -like "Running")
-                    {
-                        Start-Process -FilePath "powershell" -Verb RunAs -ArgumentList "-command Stop-Service -Name $selectedservice"
-                        $($listbox.Items | Where-object Text -Like $selectedservice).ImageIndex = 1
-                        $powerButton.Text = "Service Stopped!"
-                        start-sleep -Seconds 2 
-                        $powerButton.Text = "Enable Service"
-                    }
-                    else
-                    {
-                        Start-Process -FilePath "powershell" -Verb RunAs -ArgumentList "-command Start-Service -Name $selectedservice"
-                        $($listbox.Items | Where-object Text -Like $selectedservice).ImageIndex = 0
-                        $powerButton.Text = "Service Started!"
-                        start-sleep -Seconds 2 
-                        $powerButton.Text = "Disable Service"
-                    
+                    try{
+                        if(($global:import | where-object Name -like "$selectedservice" | select-object -ExpandProperty Status) -like "Running")
+                        {
+                            Start-Process -FilePath "powershell" -Verb RunAs -ArgumentList "-command Stop-Service -Name $selectedservice"
+                            $($listbox.Items | Where-object Text -Like $selectedservice).ImageIndex = 1
+                            $powerButton.Text = "Service Stopped!"
+                            start-sleep -Seconds 2 
+                            $powerButton.Text = "Enable Service"
+                        }
+                        else
+                        {
+                            Start-Process -FilePath "powershell" -Verb RunAs -ArgumentList "-command Start-Service -Name $selectedservice"
+                            $($listbox.Items | Where-object Text -Like $selectedservice).ImageIndex = 0
+                            $powerButton.Text = "Service Started!"
+                            start-sleep -Seconds 2 
+                            $powerButton.Text = "Disable Service"
+                        
+                        }
                     }            
-                }
-                catch
-                {
-                    $powerButton.Text = "Could turn off/on service!"
-                    start-sleep -Seconds 2 
-                    $powerButton.Text = "$originalstatus"
+                    catch
+                    {
+                        $powerButton.Text = "Could turn off/on service!"
+                        start-sleep -Seconds 2 
+                        $powerButton.Text = "$originalstatus"
+                    }
                 }
             }
             else 
@@ -323,14 +327,7 @@ $powerButton.Add_Click(
                         $powerButton.Text = "Enable Service"                   
                     }                
                 }        
-            }
-        
-            $form.Enabled = $true
-            $powerButton.Enabled = $true 
-            
-
-
-
+            }    
 
             if($machinebar.Text -like $null){
                 $global:import = get-service     
@@ -351,7 +348,6 @@ $powerButton.Add_Click(
             $svcstatus.Text = $global:import | where-object Name -like "$($svcclicked)" | select-object -ExpandProperty Status
             $svclongname.Text = $global:import | where-object Name -like "$($svcclicked)" | select-object -ExpandProperty DisplayName
             $svcdetails.Text = $global:import | where-object Name -like "$($svcclicked)" | select-object -ExpandProperty Description
-            $form.Enabled = $true
             $powerButton.Enabled = $true 
             if($svcstatus.Text -notlike "Running")
             {
@@ -362,6 +358,7 @@ $powerButton.Add_Click(
                 $resetButton.Enabled = $True
             }
             $ErrorActionPreference = "SilentlyContinue"
+            $form.Enabled = $true
     }
 
 )
